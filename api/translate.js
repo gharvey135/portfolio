@@ -27,6 +27,8 @@ From the account health score and signals given, write the specific talking poin
 Concrete, not generic. Plain text. Under 150 words.`
 };
 
+let resolvedModel = null;
+
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
@@ -38,24 +40,38 @@ module.exports = async function handler(req, res) {
     const system = SYSTEM[task] || SYSTEM['spec'];
     if (!ask || !String(ask).trim()) return res.status(400).json({ error: 'Empty input' });
 
-    const r = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-        'x-api-key': key,
-        'anthropic-version': '2023-06-01'
-      },
-      body: JSON.stringify({
-        model: 'claude-3-5-haiku-latest',
-        max_tokens: 400,
-        system,
-        messages: [{ role: 'user', content: String(ask).slice(0, 1200) }]
-      })
-    });
+    // Model availability differs per account, so try the cheap ones first and
+    // remember whichever works for the life of this warm instance.
+    const candidates = process.env.CLAUDE_MODEL
+      ? [process.env.CLAUDE_MODEL]
+      : ['claude-haiku-4-5', 'claude-3-5-haiku-20241022', 'claude-3-5-haiku-latest',
+         'claude-sonnet-4-5', 'claude-3-5-sonnet-20241022'];
+    const order = resolvedModel ? [resolvedModel, ...candidates.filter(m => m !== resolvedModel)] : candidates;
 
-    if (!r.ok) {
-      const detail = await r.text();
-      return res.status(502).json({ error: 'Upstream error', detail: detail.slice(0, 300) });
+    let r = null, lastDetail = '';
+    for (const model of order) {
+      r = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+          'x-api-key': key,
+          'anthropic-version': '2023-06-01'
+        },
+        body: JSON.stringify({
+          model,
+          max_tokens: 400,
+          system,
+          messages: [{ role: 'user', content: String(ask).slice(0, 1200) }]
+        })
+      });
+      if (r.ok) { resolvedModel = model; break; }
+      lastDetail = await r.text();
+      // only a missing model is worth retrying; anything else is a real failure
+      if (!lastDetail.includes('not_found_error')) break;
+    }
+
+    if (!r || !r.ok) {
+      return res.status(502).json({ error: 'Upstream error', detail: lastDetail.slice(0, 300) });
     }
 
     const data = await r.json();

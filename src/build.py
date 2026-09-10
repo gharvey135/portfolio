@@ -193,6 +193,7 @@ page = f'''<!doctype html>
 
 <header class="hero"><div class="wrap">
   <div class="hero-txt" data-rv>
+  <div class="avi"><img src="/assets/avatar.jpg" alt="Georgia Harvey" width="240" height="240" fetchpriority="high"></div>
   <div class="eyebrow"><span class="wave" role="img" aria-label="waving hand">&#128075;</span>Hi y&#8217;all, I am</div>
   <h1 class="name">Georgia</h1>
   <p class="lede">I sit between the people with the problem and the systems that could solve it, and I <em>make sure to connect the two as the part in the middle</em>.</p>

@@ -5,14 +5,15 @@ Source for [georgia-sa-portfolio.vercel.app](https://georgia-sa-portfolio.vercel
 
 **Run it:** serve the folder (`python3 -m http.server`) and open it. No build step, no dependencies, no bundler.
 **What it proves:** every build carries its own architecture diagram, generated from a data spec rather
-than drawn by hand, so the page reads as a system rather than a list of paragraphs.
+than drawn by hand, and written so a non-technical reader follows it at a glance while the detail a
+technical reader wants sits one line below.
 
 ## Layout
 
 | Path | What it is |
 | --- | --- |
 | `index.html` | The page. Markup only. |
-| `assets/` | `style.css` (design tokens and layout), `app.js` (18 interactive prototypes), `shots/` (screenshots of the live demos). |
+| `assets/` | `style.css` (design tokens and layout), `app.js` (18 interactive prototypes plus the interaction layer), `shots/` (screenshots of the live demos). |
 | `api/translate.js` | Vercel serverless function. Six task-specific prompts behind one endpoint, so the "Run live with Claude" buttons call a real model. The key is an environment variable and never reaches the client. |
 | `src/` | The generator. `build.py` assembles `index.html` from the extracted content model plus the design system, so copy and layout stay separable. |
 
@@ -30,8 +31,10 @@ cd src && python3 build.py     # writes ../index.html
 ```
 
 Content lives in `src/content.json` (copy, extracted from the previous version) and `src/plain.json`
-(the human-readable titles). `src/diagrams_data.py` holds one column-flow spec per build and
-`src/diagram.py` renders each to inline SVG. Design tokens are in `src/style.css`.
+(the human-readable titles). `src/diagrams_v2.py` holds one flow spec per build, written in plain language with an optional
+technical sub-line per node, and `src/flow.py` renders each to semantic HTML so it stays readable
+and reflows to one column on a phone. `src/ux.js` is the interaction layer (scroll reveal, section
+tracking, reading progress). Design tokens are in `src/style.css`.
 
 ## Deploying
 

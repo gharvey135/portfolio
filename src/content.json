@@ -378,7 +378,7 @@
   "cat_label": "Personal Projects  - 2 entries",
   "title": "job-discovery-app",
   "status": "In Build",
-  "body": "A Tinder-style job discovery product from architecture through backend logic - <strong>full schema, 7 automated trigger functions, AI-powered resume parsing and job scoring.</strong>",
+  "body": "A Swipe-style job discovery product from architecture through backend logic - <strong>full schema, 7 automated trigger functions, AI-powered resume parsing and job scoring.</strong>",
   "tags": [
    "React",
    "Supabase",

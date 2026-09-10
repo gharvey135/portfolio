@@ -1,12 +1,12 @@
 import json, re, html
 from venues import VENUES, REPOS
-from diagram import diagram
-from diagrams_data import DGM, SHOTS
+from flow import flow
+from diagrams_v2 import DGM, SHOTS
 
 entries = json.load(open('content.json'))
 plain   = json.load(open('plain.json'))
 css     = ''.join(open(f).read() for f in ('style.css','alias.css','proto.css'))
-js      = open('portfolio.js').read()
+js      = open('portfolio.js').read() + '\n' + open('ux.js').read()
 
 def dec(s): return html.unescape(s or '').replace('&middot;', ',')
 
@@ -26,24 +26,24 @@ def links_row(links):
 
 def card(*, slug, human_title, tech_body, prov, impact, live, tags,
          pain, solve, where, steps, why, proto='', links=None):
-    chips  = '<span class="mchip live">in production</span>' if live else ''
+    chips  = '<span class="mchip live">personal project</span>' if live else ''
     chips += f'<span class="mchip">{dec(prov)}</span>' if prov else ''
     chips += f'<span class="mchip impact">{dec(impact)}</span>' if impact else ''
     tagshtml  = ''.join(f'<span class="tag">{dec(t)}</span>' for t in tags)
     stepshtml = ''.join(f'<li>{s}</li>' for s in steps)
-    spec, cap = DGM.get(slug, (None, None))
-    vis = f'<div class="card-vis">{diagram(spec, cap)}</div>' if spec else ''
+    spec = DGM.get(slug)
+    vis = f'<div class="card-vis">{flow(spec)}</div>' if spec else ''
     shot = ''
     if slug in SHOTS:
         src, alt = SHOTS[slug]
         shot = (f'<figure class="shot"><img src="{src}" alt="{alt}" loading="lazy" width="1400" height="760">'
                 f'<figcaption>{alt}</figcaption></figure>')
     return f'''
-<article class="card" id="b-{slug}">
+<article class="card" id="b-{slug}" data-rv>
   <div class="card-top" onclick="this.parentNode.classList.toggle('open')" role="button" tabindex="0"
        onkeydown="if(event.key==='Enter'||event.key===' '){{event.preventDefault();this.parentNode.classList.toggle('open')}}">
     <div class="card-meta"><span class="slug">{slug}</span>{chips}</div>
-    <div class="card-cols">
+    <div class="card-body-wrap">
       <div class="card-txt">
         <h3 class="card-title">{human_title}</h3>
         <p class="card-body">{tech_body}</p>
@@ -91,20 +91,22 @@ by_cat = {}
 for e in entries: by_cat.setdefault(e['cat'], []).append(e)
 
 SECTIONS = [
- ("production", "In production", "Systems I own and operate",
-  "Built for the two Austin venues I co-own. Code and live demos are public.",
+ ("production", "Personal projects", "Systems I built and run",
+  "Built for the two Austin venues I co-own, and running there now. The code and the live demos are public.",
   [from_venue(v) for v in VENUES]),
  ("clients", "Client delivery", "Shipped to enterprise customers",
-  "Scoped, built, taken to production, handed to their team to run without me.",
+  "Scoped, built, taken to production, and handed to their team to run. "
+  "Mock data or changed names are used throughout for privacy where necessary.",
   [from_entry(e) for e in by_cat.get('clients', [])]),
- ("solutions", "Architecture", "Tooling for the work itself",
-  "So scoping, account reviews, and debugging stop depending on one senior person being in the room.",
+ ("solutions", "Internal tools", "Tools I built to do the job better",
+  "Built between engagements, for scoping, account reviews, and integration debugging. "
+  "Each one turns a task that used to need a senior engineer into something a team can run.",
   [from_entry(e) for e in by_cat.get('solutions', [])]),
  ("operations", "Operations", "The unglamorous systems",
   "Rarely the thing anyone demos, usually the thing that decides whether output stays consistent.",
   [from_entry(e) for e in by_cat.get('operations', [])]),
- ("personal", "Personal", "Problems I had",
-  "Solved end to end rather than tolerated.",
+ ("personal", "Side builds", "Problems I had, solved end to end",
+  "Built for myself rather than tolerated.",
   [from_entry(e) for e in by_cat.get('personal', [])]),
 ]
 
@@ -112,7 +114,7 @@ secs = ''
 for sid, eyebrow, title, note, cards in SECTIONS:
     secs += f'''
 <section class="sec" id="{sid}"><div class="wrap">
-  <div class="sec-head">
+  <div class="sec-head" data-rv>
     <div class="sec-tag">{eyebrow}<span>{len(cards)}</span></div>
     <h2>{title}</h2>
     <p class="sec-note">{note}</p>
@@ -121,38 +123,43 @@ for sid, eyebrow, title, note, cards in SECTIONS:
 </div></section>'''
 
 repos = ''.join(
-  f'''<a class="repo" href="https://github.com/gharvey135/{n}" target="_blank" rel="noopener">
+  f'''<a class="repo" data-rv href="https://github.com/gharvey135/{n}" target="_blank" rel="noopener">
     <div class="repo-n">{ICON["code"]}{n}</div><p class="repo-d">{d}</p>
-    <div class="repo-m"><span>{lang}</span><b>{t}</b></div></a>''' for n, d, lang, t in REPOS)
+    <div class="repo-m"><span>{lang}</span></div></a>''' for n, d, lang, t in REPOS)
 
 secs += f'''
 <section class="sec" id="code"><div class="wrap">
-  <div class="sec-head">
+  <div class="sec-head" data-rv>
     <div class="sec-tag">Code<span>{len(REPOS)}</span></div>
     <h2>Open source</h2>
-    <p class="sec-note">Each with tests and continuous integration. Every repository runs from a clean clone with no credentials.</p>
+    <p class="sec-note">Each one runs from a clean clone with no credentials, and ships with continuous integration.</p>
   </div>
   <div class="repos">{repos}</div>
 </div></section>'''
 
-NAV = [("production","production"),("clients","clients"),("solutions","architecture"),
-       ("operations","operations"),("personal","personal"),("code","code")]
+NAV = [("production","personal projects"),("clients","client delivery"),("solutions","internal tools"),
+       ("operations","operations"),("personal","side builds"),("code","open source")]
 nav = ''.join(f'<a href="#{i}">{l}</a>' for i, l in NAV)
 
-HERO_MAP = diagram(
-  [["Salesforce", "Toast / POS", "Dropbox", "Sheets", "LLM APIs"],
-   ["Integration|I design and build"],
-   ["One source|of truth", "Reports people|actually read", "A team that|runs it without me"]],
-  "the shape of most of my work")
+HERO_MAP = flow({
+  "zones": ["Systems you already run", "What I do", "What you are left with"],
+  "cols": [
+    [{"label": "CRM and support", "sub": "Salesforce, HubSpot, Zendesk", "icon": "cloud"},
+     {"label": "Payments and POS", "sub": "Toast, Melio, billing", "icon": "receipt"},
+     {"label": "Files and spreadsheets", "sub": "Dropbox, Google Workspace", "icon": "folder"}],
+    [{"label": "Design and build the join", "sub": "discovery through launch", "icon": "gear"},
+     {"label": "Add AI where it pays", "sub": "with a person in the loop", "icon": "robot"}],
+    [{"label": "One set of numbers", "sub": "that everyone agrees on", "icon": "database"},
+     {"label": "Reports people read", "sub": "answers, not raw exports", "icon": "chart"},
+     {"label": "A team that runs it", "sub": "without needing me", "icon": "person"}],
+  ],
+  "caption": "The shape of most of my work",
+})
 
-STAGES = [("Discovery","volumes, dedup keys,|who owns errors"),
-          ("Architecture","the design doc their|engineers say yes to"),
-          ("Build","idempotent writes,|classified retries"),
-          ("Launch","UAT on evidence,|not on vibes"),
-          ("Handoff","their team runs it|without me")]
+STAGES = ["Discovery", "Architecture", "Build", "Launch", "Handoff"]
 stages = ''.join(
-  f'<li><span class="st-n">{i+1}</span><span class="st-t">{t}</span>'
-  f'<span class="st-d">{d.replace("|","<br>")}</span></li>' for i,(t,d) in enumerate(STAGES))
+  f'<li><span class="st-n">{i+1}</span><span class="st-t">{t}</span></li>'
+  for i, t in enumerate(STAGES))
 
 DESC = ("Georgia Harvey, Solutions Architect in Austin, TX. Enterprise integrations and AI workflows, "
         "discovery through handoff. Production systems, client delivery, and open source, with the code.")
@@ -183,8 +190,7 @@ page = f'''<!doctype html>
 </div></div>
 
 <header class="hero"><div class="wrap">
-  <div class="hero-cols">
-   <div class="hero-txt">
+  <div class="hero-txt" data-rv>
   <div class="eyebrow">Solutions Architect &middot; Austin, TX</div>
   <h1 class="name">Georgia Harvey</h1>
   <p class="lede">I connect the systems a business already runs, and then <em>hand them over working</em>.</p>
@@ -194,17 +200,9 @@ page = f'''<!doctype html>
     <a class="lk" href="https://github.com/gharvey135" target="_blank" rel="noopener">{ICON["code"]}GitHub</a>
     <a class="lk" href="https://www.linkedin.com/in/georgia-harvey/" target="_blank" rel="noopener">{LI}LinkedIn</a>
   </div>
-   </div>
-   <div class="hero-vis">{HERO_MAP}</div>
   </div>
-  <div class="proof">
-    <div class="pf"><b>7 yrs</b><span>Enterprise solutions and delivery</span></div>
-    <div class="pf"><b>150+</b><span>Enterprise API accounts supported</span></div>
-    <div class="pf"><b>3</b><span>Systems I run in production</span></div>
-    <div class="pf"><b>389</b><span>Automated tests across public repos</span></div>
-    <div class="pf"><b>21</b><span>Builds documented below</span></div>
-  </div>
-  <ol class="stages">{stages}</ol>
+  <div class="hero-vis" data-rv>{HERO_MAP}</div>
+  <ol class="stages" data-rv>{stages}</ol>
 </div></header>
 
 <div class="bar"><div class="bar-in">

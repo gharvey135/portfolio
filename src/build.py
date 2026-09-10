@@ -234,5 +234,17 @@ page = re.sub(r'<style>(.*?)</style>', _mincss, page, flags=re.S)
 page = re.sub(r'>\n\s+<', '><', page)
 page = re.sub(r'\n{2,}', '\n', page)
 
+# split assets: cacheable, and keeps any single file small
+import os
+_css = re.search(r'<style>(.*?)</style>', page, re.S).group(1)
+_scr = re.findall(r'<script>(.*?)</script>', page, re.S)
+page = re.sub(r'<style>.*?</style>', '<link rel="stylesheet" href="/assets/style.css">', page, flags=re.S)
+page = re.sub(r'<script>.*?</script>\s*<script>.*?</script>',
+              '<script src="/assets/app.js" defer></script>\n<script src="/assets/toggle.js" defer></script>',
+              page, flags=re.S)
+os.makedirs('../assets', exist_ok=True)
+open('../assets/style.css','w').write(_css)
+open('../assets/app.js','w').write(_scr[0])
+open('../assets/toggle.js','w').write(_scr[1])
 open('../index.html','w').write(page)
-print('index.html', len(page), 'chars')
+print('index.html', len(page), '| style.css', len(_css), '| app.js', len(_scr[0]), '| toggle.js', len(_scr[1]))

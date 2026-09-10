@@ -162,7 +162,7 @@
    "Exposed it so product and CS teams could self-serve usage-vs-renewal questions without a data engineer in the loop."
   ],
   "why": "Built at Sentieo (acquired by AlphaSense) to answer the one question leadership kept asking that nobody could answer quickly. The exact data-flow work behind advising a customer on getting their data into Snowflake or Databricks.",
-  "proto": "<div class=\"proto-box\">\n          <div class=\"proto-label\">&#9656; try it - run the question against the modeled schema</div>\n          <div class=\"chip-row\">\n            <div class=\"chip\" onclick=\"runQuery('cost')\">Usage by account tier</div>\n            <div class=\"chip\" onclick=\"runQuery('growth')\">Q/Q active-account growth</div>\n            <div class=\"chip\" onclick=\"runQuery('avg')\">Avg integrations per account</div>\n          </div>\n          <div class=\"spec-out\" id=\"wh-out\">Pick a query above to run it against the modeled schema.</div>\n        </div>\n      </div></div>\n    \n\n  \n\n  <div class=\"section-label\" id=\"clients\">Clients <span class=\"count\">- 4 entries</span>\n\n  <div class=\"log\">"
+  "proto": "<div class=\"proto-box\">\n          <div class=\"proto-label\">&#9656; try it - run the question against the modeled schema</div>\n          <div class=\"chip-row\">\n            <div class=\"chip\" onclick=\"runQuery('cost')\">Usage by account tier</div>\n            <div class=\"chip\" onclick=\"runQuery('growth')\">Q/Q active-account growth</div>\n            <div class=\"chip\" onclick=\"runQuery('avg')\">Avg integrations per account</div>\n          </div>\n          <div class=\"spec-out\" id=\"wh-out\">Pick a query above to run it against the modeled schema.</div></div>"
  },
  {
   "cat": "clients",
@@ -256,7 +256,7 @@
    "Added retry with exponential backoff and an error queue so a failed call never silently dropped a record - both teams could trust the data."
   ],
   "why": "Built for a Productboard enterprise client whose sales and product teams were maintaining the same list twice. The kind of CRM-to-system-of-record bridge post-sales customers need across their whole stack.",
-  "proto": "<div class=\"proto-box\">\n          <div class=\"proto-label\">&#9656; try it - simulate a sync cycle</div>\n          <div class=\"sync-stage\">\n            <div class=\"sync-node\"><div class=\"n-label\">Salesforce</div><div class=\"n-sub\" id=\"sf-sub\">Opportunity: Acme Corp</div></div>\n            <div class=\"sync-dot\" id=\"sync-dot\"></div>\n            <div class=\"sync-node\"><div class=\"n-label\">Productboard</div><div class=\"n-sub\" id=\"pb-sub\">awaiting sync...</div></div>\n          </div>\n          <div class=\"sync-map\" id=\"sync-map\">\n            <div class=\"row\"><span>Opportunity: \"Bulk export API\"</span><span>-</span></div>\n            <div class=\"row\"><span>Stage: Discovery</span><span>-</span></div>\n          </div>\n          <button class=\"proto-btn primary\" onclick=\"runSync()\" style=\"margin-top:12px;\">&#8646; Run sync cycle</button>\n        </div>\n      </div></div>\n    \n\n  \n\n  <div class=\"section-label\" id=\"operations\">Operations <span class=\"count\">- 5 entries</span>\n\n  <div class=\"log\">"
+  "proto": "<div class=\"proto-box\">\n          <div class=\"proto-label\">&#9656; try it - simulate a sync cycle</div>\n          <div class=\"sync-stage\">\n            <div class=\"sync-node\"><div class=\"n-label\">Salesforce</div><div class=\"n-sub\" id=\"sf-sub\">Opportunity: Acme Corp</div></div>\n            <div class=\"sync-dot\" id=\"sync-dot\"></div>\n            <div class=\"sync-node\"><div class=\"n-label\">Productboard</div><div class=\"n-sub\" id=\"pb-sub\">awaiting sync...</div></div>\n          </div>\n          <div class=\"sync-map\" id=\"sync-map\">\n            <div class=\"row\"><span>Opportunity: \"Bulk export API\"</span><span>-</span></div>\n            <div class=\"row\"><span>Stage: Discovery</span><span>-</span></div>\n          </div>\n          <button class=\"proto-btn primary\" onclick=\"runSync()\" style=\"margin-top:12px;\">&#8646; Run sync cycle</button></div>"
  },
  {
   "cat": "operations",
@@ -371,7 +371,7 @@
    "A single dashboard view replaces checking each vendor's portal manually."
   ],
   "why": "Directly inspired by running vendor and lease contracts for two venues by hand - the exact kind of preventable miss a Chief of Staff or Solutions Architect is trusted to catch before it costs money.",
-  "proto": "<div class=\"proto-box\">\n          <div class=\"proto-label\">\u25b8 try it - live status against today's date</div>\n          <table class=\"ren-table\" id=\"ren-table\"></table>\n          <div class=\"proto-note\">Status computed live from today's date (Jul 2, 2026) against each renewal deadline.</div>\n        </div>\n      </div></div>\n    \n\n  \n\n  <div class=\"section-label\" id=\"personal\">Personal Projects <span class=\"count\">- 2 entries</span>\n\n  <div class=\"log\">"
+  "proto": "<div class=\"proto-box\">\n          <div class=\"proto-label\">\u25b8 try it - live status against today's date</div>\n          <table class=\"ren-table\" id=\"ren-table\"></table>\n          <div class=\"proto-note\">Status computed live from today's date (Jul 2, 2026) against each renewal deadline.</div></div>"
  },
  {
   "cat": "personal",

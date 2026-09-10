@@ -37,6 +37,9 @@ for i in range(len(starts) - 1):
     pm = re.search(r'(<div class="proto-box">.*)', b, re.S)
     proto = pm.group(1) if pm else ''
     # trim trailing closing divs that belonged to entry/detail wrappers
+    # an entry that ends a category is followed by the next category's header; cut it off
+    for marker in ('<div class="section-label"', '<div class="log">'):
+        if marker in proto: proto = proto[:proto.index(marker)]
     proto = re.sub(r'<!--.*?-->', '', proto, flags=re.S).rstrip()
     proto = re.sub(r'(?:\s*</div>)+\s*$', '', proto).rstrip()
     # robust rebalance: drop excess trailing closes, then add any that are missing

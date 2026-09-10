@@ -65,6 +65,8 @@ def card(*, slug, human_title, plain_body, tech_body, prov, impact, live, tags,
 def from_entry(e):
     p = plain[e['title']]
     prov = dec(e['where'])
+    # the full provenance stays on the build accordion; the chip stays short
+    if prov.startswith('Design concept'): prov = 'Design study'
     if e['status'] == 'In Build': prov = 'In active development'
     return card(slug=e['title'], human_title=p['human_title'],
                 plain_body=p['plain_body'], tech_body=e['body'],

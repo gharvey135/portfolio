@@ -1,0 +1,146 @@
+{
+  "requirements-to-architecture-translator": {
+    "human_title": "Turn a meeting request into a spec",
+    "plain_body": "A stakeholder types what they want in plain English and gets back a first-draft technical plan on screen. Scoping calls now start from a shared document instead of a blank page.",
+    "plain_pain": "The translation from what a customer asks for to what engineers can build lived in one architect's head.",
+    "plain_solve": "Anyone can produce a first-draft spec in seconds, so the conversation starts with something real on screen.",
+    "impact": null,
+    "audience_note": "Internal tool for my team"
+  },
+  "config-review-ai-agent": {
+    "human_title": "Give every account an expert review",
+    "plain_body": "Built a reviewer that reads how a customer actually set up their account, compares it to what good looks like, and hands back a ranked list of problems with the specific fix for each.",
+    "plain_pain": "Six months after launch, setups quietly drift, and nobody catches it until something breaks.",
+    "plain_solve": "Every account gets the same expert review, not just the ones making noise.",
+    "impact": null,
+    "audience_note": "Built for account health reviews"
+  },
+  "ai-workflow-orchestration-pipeline": {
+    "human_title": "Sort thousands of customer comments automatically",
+    "plain_body": "A support ticket, a survey comment, and a sales note all say the same thing in different words. This reads all of it, tags it, groups it into themes, and sends it to the right team in seconds.",
+    "plain_pain": "Nobody had time to read every piece of customer feedback, so the patterns got missed.",
+    "plain_solve": "Feedback gets read, sorted, and routed in seconds instead of sitting in a queue for a week.",
+    "impact": "Weeks to seconds",
+    "audience_note": "Reusable pattern for customer work"
+  },
+  "integration-triage-diagnostic": {
+    "human_title": "Fix a broken connection without an expert",
+    "plain_body": "Built a guided flow that asks the same questions a senior engineer would ask when a customer's data stopped flowing, and lands on the actual cause and the exact fix.",
+    "plain_pain": "How fast a customer got unblocked depended entirely on which engineer happened to pick up the ticket.",
+    "plain_solve": "Anyone on the team can walk the expert path, and senior engineers stop re-solving the same failures.",
+    "impact": null,
+    "audience_note": "For enterprise support accounts"
+  },
+  "customer-health-risk-dashboard": {
+    "human_title": "Spot a customer at risk before renewal",
+    "plain_body": "Scores each account on how much they actually use the product, then writes the specific talking points a customer manager brings into the renewal conversation. Not just a number, a next step.",
+    "plain_pain": "By the time a renewal call reveals a customer is unhappy, the warning signs have been sitting unread for months.",
+    "plain_solve": "Teams see which accounts are slipping months early, with a concrete action for each one.",
+    "impact": null,
+    "audience_note": "For customer success and product teams"
+  },
+  "tool-consolidation-roi-model": {
+    "human_title": "Put a dollar figure on tool overlap",
+    "plain_body": "A customer was paying for four tools that overlapped and nobody had ever added up the cost. This models what they spend now, what one platform would cost, and what they save.",
+    "plain_pain": "Nobody could say what four overlapping tools were actually costing the business every month.",
+    "plain_solve": "The sales team walks into the renewal with a real number instead of a pitch.",
+    "impact": "Four tools priced in one model",
+    "audience_note": "Built for an enterprise customer"
+  },
+  "analytics-warehouse-pipeline": {
+    "human_title": "Answer does heavy usage predict renewal",
+    "plain_body": "Usage, billing, and renewal records lived in three separate systems. I pulled them into one place so product and customer teams could answer questions like this themselves, in one step.",
+    "plain_pain": "Every time leadership asked whether usage predicted renewal, someone burned an afternoon in a spreadsheet.",
+    "plain_solve": "Teams answer that question, and any question like it, without waiting on a data engineer.",
+    "impact": "An afternoon to one query",
+    "audience_note": "For product and customer success teams"
+  },
+  "spark-ai-workflow-orchestration": {
+    "human_title": "Turn a feedback firehose into weekly digests",
+    "plain_body": "A customer's product team got thousands of feedback items a month and read almost none of it. I built and launched a system that reads all of it and sends leadership a weekly summary by product area.",
+    "plain_pain": "Thousands of customer comments a month went unread, so leadership guessed at what customers wanted.",
+    "plain_solve": "Leadership gets a weekly summary of everything customers said, and the customer's own team runs it.",
+    "impact": "Thousands of items a month",
+    "audience_note": "Built for an enterprise customer"
+  },
+  "geolocation-radius-validation": {
+    "human_title": "Prove the location filter is actually correct",
+    "plain_body": "A news product promised articles near a location. I checked the distance math independently before launch, so customers could trust it. Support tickets dropped 24.7 percent.",
+    "plain_pain": "A location filter that is subtly wrong never throws an error, customers just quietly stop trusting it.",
+    "plain_solve": "150 plus enterprise customers got a feature they trusted enough to actually use.",
+    "impact": "Support tickets down 24.7%",
+    "audience_note": "For 150+ enterprise accounts"
+  },
+  "legacy-data-migration-automation": {
+    "human_title": "Move years of messy records same day",
+    "plain_body": "New customers arrived with years of old records in whatever format they had. I automated the cleanup and the move, so it takes a day instead of weeks and bad records get flagged before they land.",
+    "plain_pain": "Hand-moving years of legacy data took weeks and still shipped errors the customer found after launch.",
+    "plain_solve": "Same-day migration, with every questionable record flagged for a human instead of quietly imported.",
+    "impact": "Weeks to same day",
+    "audience_note": "For enterprise onboarding"
+  },
+  "salesforce-productboard-two-way-sync": {
+    "human_title": "Stop sales and product keeping two lists",
+    "plain_body": "Sales logged customer requests in one system, product worked in another, and a person retyped every request by hand. Now requests move over on their own and product decisions flow back automatically.",
+    "plain_pain": "Someone retyped every customer request by hand, and sales never heard what product decided.",
+    "plain_solve": "Both teams work off the same list, updated automatically in both directions.",
+    "impact": null,
+    "audience_note": "Built for an enterprise customer"
+  },
+  "colleague-ai-productivity-agent": {
+    "human_title": "One team assistant that knows our accounts",
+    "plain_body": "Everyone was asking the same handful of questions in their own private chatbot tab, getting different quality answers. I built one shared assistant wired to our real account data.",
+    "plain_pain": "Each person solved the same questions their own way, so answer quality was all over the place.",
+    "plain_solve": "One shared tool answers from real account data, and everyone gets the same quality.",
+    "impact": null,
+    "audience_note": "Internal tool for my team"
+  },
+  "internal-ops-document-automation": {
+    "human_title": "Rebuild every venue handbook in one click",
+    "plain_body": "I co-own two Austin venues. Handbooks, pay structures, and policies used to get rebuilt by hand every time something changed. Now I change the text once and fully branded documents regenerate instantly.",
+    "plain_pain": "Rebuilding handbooks and policy docs by hand every time the business changed was slow and full of mistakes.",
+    "plain_solve": "Change the content once, get finished branded documents for both venues on demand.",
+    "impact": "Two venues, one template",
+    "audience_note": "For my own venues"
+  },
+  "board-update-auto-draft": {
+    "human_title": "Hand an exec a written board update",
+    "plain_body": "Designed a system that gathers the numbers leadership already tracks, writes the first draft of the update, and flags anything that moved enough to need explaining. The exec edits instead of assembling.",
+    "plain_pain": "Board decks eat a full day of an executive's time every cycle, just collecting numbers that already exist.",
+    "plain_solve": "The exec starts from a written draft and spends their time on the story, not the gathering.",
+    "impact": null,
+    "audience_note": null
+  },
+  "meeting-followthrough-agent": {
+    "human_title": "Make sure meeting commitments actually happen",
+    "plain_body": "Designed a system that reads raw meeting notes, pulls out who promised to do what by when, and nudges them at the deadline. Nothing said out loud gets quietly dropped.",
+    "plain_pain": "Meetings do not fail on decisions, they fail on follow-through nobody re-surfaces for three weeks.",
+    "plain_solve": "Every commitment made out loud gets an owner, a date, and a reminder.",
+    "impact": null,
+    "audience_note": null
+  },
+  "vendor-renewal-radar": {
+    "human_title": "Catch a bad contract before it auto-renews",
+    "plain_body": "Designed a single view of every contract and subscription with its renewal date and cancellation window, plus warnings that escalate as the deadline gets closer. Nothing renews by accident.",
+    "plain_pain": "A vendor auto-renews at a bad rate because nobody owned the 30-day notice window, and that costs real money.",
+    "plain_solve": "Every renewal deadline is visible in one place, with warnings at 45, 14, and 3 days out.",
+    "impact": "Alerts at 45, 14, 3 days",
+    "audience_note": "Inspired by running my venues"
+  },
+  "job-discovery-app": {
+    "human_title": "Swipe through jobs that actually fit you",
+    "plain_body": "Upload your resume once, then swipe through jobs ranked by how well they match you. The app learns from what you like and refills your queue every day. In active development.",
+    "plain_pain": "Job hunting means reading hundreds of postings and retyping the same details into every application.",
+    "plain_solve": "You see a short ranked list each day instead of a wall of postings, and it gets better as you swipe.",
+    "impact": null,
+    "audience_note": "Personal project, in build"
+  },
+  "visa-appointment-checker-bot": {
+    "human_title": "Get alerted the second a slot opens",
+    "plain_body": "Visa appointment slots appear and vanish in minutes across several consulate sites. This watches all of them around the clock and texts my phone the moment one opens.",
+    "plain_pain": "Checking several consulate sites by hand all day is impossible, so the slots you need get missed.",
+    "plain_solve": "I stopped refreshing pages and got an alert the instant a slot appeared.",
+    "impact": "Runs unattended daily",
+    "audience_note": "Solved my own visa problem"
+  }
+}

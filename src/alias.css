@@ -1,0 +1,27 @@
+/* legacy tokens mapped onto the new system so the prototypes inherit the new look */
+:root{
+  --text:var(--tx);
+  --text-dim:var(--tx-3);
+  --border:var(--line-2);
+  --proto:rgba(255,255,255,.022);
+  --amber:var(--accent);
+  --mint:var(--live);
+  --red:#E8825A;
+  --blue:#8FA8FF;
+  --surface-hover:var(--surface-2);
+}
+/* prototype container refinements */
+.proto-box{margin-top:22px!important;border-radius:11px!important;padding:20px!important;
+  border-color:var(--line)!important;background:rgba(255,255,255,.022)!important}
+.proto-label{font-size:10.5px!important;letter-spacing:.13em!important;margin-bottom:15px!important}
+.proto-btn{border-radius:7px!important;transition:all .18s var(--ease)!important}
+.proto-btn:hover{border-color:var(--accent)!important;background:var(--accent-dim)!important}
+.proto-btn.primary{background:var(--accent)!important;color:#0A0A0A!important;
+  border-color:var(--accent)!important;font-weight:600!important}
+.proto-btn.primary:hover{background:#FFC848!important}
+.proto-box input,.proto-box textarea,.proto-box select{
+  border-radius:7px!important;border-color:var(--line-2)!important;
+  background:rgba(0,0,0,.28)!important;color:var(--tx)!important}
+.proto-box input:focus,.proto-box textarea:focus{border-color:var(--accent)!important;outline:none!important}
+.proto-box .chip{cursor:pointer;transition:all .16s var(--ease)}
+.proto-box .chip:hover{border-color:var(--accent)!important;color:var(--accent)!important}

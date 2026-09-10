@@ -1,0 +1,424 @@
+[
+ {
+  "cat": "solutions",
+  "cat_label": "Solutions Architecture  - 7 builds",
+  "title": "requirements-to-architecture-translator",
+  "status": "Shipped",
+  "body": "Type a plain-language business ask, get back a <strong>structured technical spec</strong> - systems touched, triggers, field mappings, and edge cases - in a hosted internal tool.",
+  "tags": [
+   "Claude",
+   "Figma connector",
+   "Prompt template",
+   "Vercel"
+  ],
+  "pain": "The hardest part of any implementation is the gap between what a stakeholder asks for in a meeting and a spec engineering can build from. That translation usually lives in one architect's head.",
+  "solve": "Turns a business sentence into a first-draft architecture spec in seconds, so solution sessions start from a shared artifact instead of a blank page.",
+  "where": "Productboard &middot; internal SA tooling",
+  "steps": [
+   "Built on <code>Claude</code> with a saved, version-controlled <strong>internal prompt template</strong> that enforces the output structure - systems, trigger, data flow, field map, edge cases.",
+   "Wired in the <code>Figma connector</code> so the generated spec drops straight onto a shared design canvas the customer and engineers annotate together in the session.",
+   "Wrapped it in a lightweight web <strong>interface</strong> (input box, example chips, rendered spec sheet) so a non-technical stakeholder can drive it.",
+   "Hosted the interface on <code>Vercel</code> for a shareable internal URL - no local setup, always current."
+  ],
+  "why": "Built at Productboard to speed up enterprise scoping calls. I was translating vague customer asks into integration specs constantly and wanted the first draft on screen, in a shared canvas, before the meeting ended.",
+  "proto": "<div class=\"proto-box\">\n          <div class=\"proto-label\">&#9656; try it - describe a requirement</div>\n          <div class=\"field\"><label>Business ask</label><input id=\"req-in\" value=\"Auto-tag incoming customer feedback by product area and route to the right team\" onclick=\"event.stopPropagation()\"></div>\n          <div class=\"chip-row\" style=\"margin-top:10px;\">\n            <div class=\"chip\" onclick=\"document.getElementById('req-in').value='Sync closed-won Salesforce deals into our roadmap tool as feature requests';runReq();\">Salesforce to roadmap</div>\n            <div class=\"chip\" onclick=\"document.getElementById('req-in').value='Push our product usage data to the warehouse nightly for analytics';runReq();\">Warehouse sync</div>\n          </div>\n          <div style=\"display:flex; gap:8px; margin-top:10px; flex-wrap:wrap;\">\n            <button class=\"proto-btn\" onclick=\"runReq()\">&#9654; Instant preview</button>\n            <button class=\"proto-btn primary\" id=\"live-btn\" onclick=\"runLiveReq()\">&#10022; Run live with Claude</button>\n          </div>\n          <div class=\"spec-out\" id=\"req-out\">Spec will render here.</div>\n          <div class=\"proto-note\" id=\"live-note\">Instant preview is pattern-matched and always available. \"Run live with Claude\" calls the real Claude API once per visit - real model output, not scripted.</div></div>"
+ },
+ {
+  "cat": "solutions",
+  "cat_label": "Solutions Architecture  - 7 builds",
+  "title": "config-review-ai-agent",
+  "status": "Concept",
+  "body": "An <strong>AI agent that reviews a customer's configuration</strong> and returns prioritized gaps, risks, and recommended fixes - an architecture review that runs itself.",
+  "tags": [
+   "Claude API",
+   "Agent design",
+   "REST API",
+   "Python"
+  ],
+  "pain": "Six months after go-live, most implementations quietly drift - integrations nobody owns, manual steps meant to be automated. Spotting it takes a senior architect manually combing the config, so it rarely happens until something breaks.",
+  "solve": "An agent inspects the live config, reasons about it against best practice, and returns a ranked list of gaps with fixes - so every account gets an expert review, not just the squeaky wheels.",
+  "where": "Productboard &middot; account health reviews",
+  "steps": [
+   "In <code>Python</code>, pulled an account's live configuration via the <code>Productboard REST API</code> as structured input for the agent.",
+   "Gave a <code>Claude API</code> agent a tool to read config plus a rubric of best-practice checks, each weighted by severity.",
+   "The agent reasons over the config, identifies gaps, and returns structured findings - issue, severity, and the specific recommended fix.",
+   "Findings render as a ranked scorecard that becomes the agenda for the customer's architecture review."
+  ],
+  "why": "Built at Productboard to make account reviews objective and scalable. Instead of a static checklist, the agent reasons about each unique config - the same review an SA would run, on every account.",
+  "proto": "<div class=\"proto-box\">\n          <div class=\"proto-label\">&#9656; try it - check what's in place, watch the agent score it</div>\n          <div id=\"gap-list\"></div>\n          <div class=\"gap-score\" id=\"gap-score\"></div>\n        </div>\n        <div class=\"proto-box\">\n          <div class=\"proto-label\">&#9656; try it - describe a real config, let the agent find the gaps</div>\n          <div class=\"field\"><label>Describe what's configured</label><textarea id=\"agent-config-in\" rows=\"3\">SSO is on for most users but three admin accounts still use passwords. No automated offboarding - IT disables accounts manually when HR notifies them. Cost centers aren't mapped to departments yet.</textarea></div>\n          <button class=\"proto-btn primary\" id=\"gap-live-btn\" onclick=\"runGapAgentLive()\" style=\"margin-top:8px;\">&#10022; Run the agent live with Claude</button>\n          <div class=\"spec-out\" id=\"gap-live-out\" style=\"display:none;\"></div>\n          <div class=\"proto-note\" id=\"gap-live-note\">This calls a real Claude agent on the config you describe - one live call per session.</div></div>"
+ },
+ {
+  "cat": "solutions",
+  "cat_label": "Solutions Architecture  - 7 builds",
+  "title": "ai-workflow-orchestration-pipeline",
+  "status": "Concept",
+  "body": "Watch one real piece of customer feedback get <strong>cleaned, tagged, and routed automatically</strong> - the exact five-step pattern behind any \"AI over messy customer data\" workflow.",
+  "tags": [
+   "Python",
+   "LangChain",
+   "LLM API",
+   "REST"
+  ],
+  "pain": "A support ticket, an NPS comment, and a sales call note all describe the same problem in three different formats. Nobody has time to read all of it, tag it consistently, and get it to the right team - so patterns get missed.",
+  "solve": "One message runs through five stages - clean it up, tag it, roll it into a theme, send it to the right team - fully automatically, in seconds instead of sitting in a queue for a week.",
+  "where": "Productboard &middot; Spark AI, reusable pattern",
+  "steps": [
+   "Abstracted the workflow into five swappable stages - ingest, normalize, classify, summarize, deliver - so each could be reconfigured per customer.",
+   "In <strong>VS Code</strong>, wrote <code>Python</code> orchestration where the normalize and classify steps take config, not hardcoded rules.",
+   "Used <code>LangChain</code> for the conditional multi-step logic and standardized the <code>LLM API</code> calls so any stage's model or prompt could swap without touching the rest.",
+   "Documented it as an internal reference pattern so any engagement could start from the architecture instead of a blank file."
+  ],
+  "why": "Built at Productboard as AI Technical Lead - the design abstraction that let one architecture serve many customers. The delivered version for a specific client lives in the Clients section.",
+  "proto": "<div class=\"proto-box\">\n          <div class=\"proto-label\">&#9656; try it - watch one message move through all five stages</div>\n          <div class=\"pipe-row\" id=\"pipe-row\"></div>\n          <div class=\"pipe-log\" id=\"pipe-log\">Press run to watch a real feedback message get cleaned, tagged, and routed.</div>\n          <button class=\"proto-btn primary\" onclick=\"runPipeline()\" style=\"margin-top:12px;\">&#9654; Run pipeline</button></div>"
+ },
+ {
+  "cat": "solutions",
+  "cat_label": "Solutions Architecture  - 7 builds",
+  "title": "integration-triage-diagnostic",
+  "status": "Concept",
+  "body": "Scenario: a customer's nightly Salesforce sync has failed three times this week with no obvious pattern. <strong>Walk the same questions a senior engineer would ask</strong> to reach the actual root cause.",
+  "tags": [
+   "Decision logic",
+   "Runbook design",
+   "Integration debugging"
+  ],
+  "pain": "When a customer integration breaks, the fix often depends on which engineer picks up the ticket - the fastest diagnostic path lives in a couple of senior people's heads, so resolution time is inconsistent and senior staff get pulled into repeat triage.",
+  "solve": "Encodes the expert debugging path into a guided flow, so first-touch resolution stops depending on who's available and senior engineers stop re-solving the same failures.",
+  "where": "Perigon &middot; enterprise API support",
+  "steps": [
+   "Catalogued the recurring integration failures across the enterprise API accounts into a set of symptom categories.",
+   "For each symptom, mapped the branching questions a senior engineer actually asks to isolate the cause.",
+   "Encoded that logic as a decision tree in <code>JavaScript</code>, where each leaf resolves to a specific root cause and the exact fix.",
+   "Recorded the path taken on each run so resolutions were self-documenting for the next person."
+  ],
+  "why": "Built from the escalation patterns I saw supporting Perigon's enterprise API accounts. A guided runbook like this cuts time-to-resolution and scales a support team's expertise across every integration a customer runs.",
+  "proto": "<div class=\"proto-box\">\n          <div class=\"proto-label\">&#9656; try it - diagnose the Salesforce sync scenario above</div>\n          <div id=\"tree-box\"></div></div>"
+ },
+ {
+  "cat": "solutions",
+  "cat_label": "Solutions Architecture  - 7 builds",
+  "title": "customer-health-risk-dashboard",
+  "status": "Concept",
+  "body": "One named account, real-looking usage signals, a computed risk score - then <strong>Claude writes the actual talking points</strong> a CSM would bring into the renewal conversation.",
+  "tags": [
+   "Python",
+   "Scoring model",
+   "Claude API"
+  ],
+  "pain": "By the time a renewal conversation reveals a customer is at risk, it's often too late. The warning signs were in the usage data months earlier, unread - and even when someone notices, turning a risk score into a concrete talking point takes time nobody has.",
+  "solve": "Scores account health from real adoption signals, then generates the specific recommendation a CSM can act on today - not just a number, an actual next step.",
+  "where": "Sentieo / AlphaSense &middot; product operations",
+  "steps": [
+   "Defined the adoption signals that actually predicted retention (active usage, integration depth, admin engagement).",
+   "In <code>Python</code>, built a weighted scoring model combining those signals into one composite health score per account.",
+   "Pulled usage data through the platform's analytics/<code>SQL</code> layer and mapped each score band to a recommended intervention.",
+   "Surfaced it as a dashboard the CS and product teams reviewed to prioritize outreach."
+  ],
+  "why": "Built as Product Operations Manager at Sentieo (acquired by AlphaSense) to get ahead of churn. Directly the \"proactively identify risks and opportunities within accounts\" work a post-sales SA owns.",
+  "proto": "<div class=\"proto-box\">\n          <div class=\"proto-label\">&#9656; try it - Acme Manufacturing, renews in 45 days</div>\n          <div class=\"health-grid\">\n            <div class=\"health-slider\"><label>Active usage</label><input type=\"range\" id=\"h-usage\" min=\"0\" max=\"100\" value=\"70\" oninput=\"runHealth()\" onclick=\"event.stopPropagation()\"></div>\n            <div class=\"health-slider\"><label>Integration depth</label><input type=\"range\" id=\"h-integ\" min=\"0\" max=\"100\" value=\"45\" oninput=\"runHealth()\" onclick=\"event.stopPropagation()\"></div>\n            <div class=\"health-slider\"><label>Admin engagement</label><input type=\"range\" id=\"h-admin\" min=\"0\" max=\"100\" value=\"60\" oninput=\"runHealth()\" onclick=\"event.stopPropagation()\"></div>\n          </div>\n          <div class=\"health-score-big\" id=\"h-score\">-</div>\n          <div class=\"health-rec\" id=\"h-rec\"></div>\n          <button class=\"proto-btn primary\" id=\"health-live-btn\" onclick=\"runHealthLive()\" style=\"margin-top:12px;\">&#10022; Draft CSM talking points with Claude</button>\n          <div class=\"spec-out\" id=\"health-out\" style=\"display:none;\"></div>\n          <div class=\"proto-note\" id=\"health-note\">The score above is computed instantly from the sliders. This button asks Claude to turn that score into an actual recommendation - one live call per session.</div></div>"
+ },
+ {
+  "cat": "solutions",
+  "cat_label": "Solutions Architecture  - 7 builds",
+  "title": "tool-consolidation-roi-model",
+  "status": "Concept",
+  "body": "Modeled from a real pattern at Productboard: a customer running <strong>four overlapping feedback and roadmap tools</strong> nobody had ever added up the true cost of.",
+  "tags": [
+   "Python",
+   "Cost modeling",
+   "ROI logic"
+  ],
+  "pain": "An enterprise customer was running a standalone feedback inbox, a separate roadmap tool, a survey tool, and a support-ticket tagger - four licenses, four integrations to maintain, and nobody had ever put a number on what the overlap actually cost.",
+  "solve": "Puts a real dollar figure on consolidating onto one platform - current spend vs. platform spend, plus the integrations retired - so the SA and Account Manager walk in with a business case, not a pitch.",
+  "where": "Productboard &middot; expansion solutioning",
+  "steps": [
+   "In <code>Python</code>, modeled this customer's current-state monthly spend and integration count across their four overlapping tools.",
+   "Encoded the consolidation logic - which overlapping tools Productboard's platform absorbs, and the integration points that retire with them.",
+   "Output projected platform cost, monthly savings, and the number of integrations eliminated.",
+   "Walked the Account Manager through it live before the renewal call - the model became the leave-behind."
+  ],
+  "why": "Built at Productboard after seeing this exact overlap on a real enterprise account. The \"point solutions to a single platform\" case a post-sales SA makes to grow an account, backed by numbers instead of enthusiasm.",
+  "proto": "<div class=\"proto-box\">\n          <div class=\"proto-label\">&#9656; try it - this customer's actual current stack</div>\n          <div class=\"consol-list\" id=\"consol-list\"></div>\n          <div class=\"consol-out\" id=\"consol-out\"></div></div>"
+ },
+ {
+  "cat": "solutions",
+  "cat_label": "Solutions Architecture  - 7 builds",
+  "title": "analytics-warehouse-pipeline",
+  "status": "Concept",
+  "body": "At Sentieo, the product team could see feature clicks but not <strong>which research usage patterns actually predicted renewal</strong> - because that data lived in three different systems.",
+  "tags": [
+   "SQL",
+   "Snowflake",
+   "ETL design",
+   "Data modeling"
+  ],
+  "pain": "Product usage lived in the app database, account tier lived in the billing system, and renewal outcomes lived in Salesforce. Answering \"does research-heavy usage predict renewal\" meant three exports and a afternoon in a spreadsheet, every single time someone asked.",
+  "solve": "A clean analytical schema, fed automatically from all three operational systems, lets product and CS self-serve that question - and any question like it - in a single query.",
+  "where": "Sentieo / AlphaSense &middot; product analytics",
+  "steps": [
+   "Designed a dimensional schema (fact + dimension tables) joining product usage, account tier, and renewal outcomes - the three metrics the business actually needed together.",
+   "Built an <code>ETL</code> job in <code>Python</code> to extract from all three operational systems incrementally and transform them into that schema.",
+   "Loaded into a <code>Snowflake</code>-style warehouse and wrote the <code>SQL</code> views the analytics layer sat on.",
+   "Exposed it so product and CS teams could self-serve usage-vs-renewal questions without a data engineer in the loop."
+  ],
+  "why": "Built at Sentieo (acquired by AlphaSense) to answer the one question leadership kept asking that nobody could answer quickly. The exact data-flow work behind advising a customer on getting their data into Snowflake or Databricks.",
+  "proto": "<div class=\"proto-box\">\n          <div class=\"proto-label\">&#9656; try it - run the question against the modeled schema</div>\n          <div class=\"chip-row\">\n            <div class=\"chip\" onclick=\"runQuery('cost')\">Usage by account tier</div>\n            <div class=\"chip\" onclick=\"runQuery('growth')\">Q/Q active-account growth</div>\n            <div class=\"chip\" onclick=\"runQuery('avg')\">Avg integrations per account</div>\n          </div>\n          <div class=\"spec-out\" id=\"wh-out\">Pick a query above to run it against the modeled schema.</div>\n        </div>\n      </div></div>\n    \n\n  \n\n  <div class=\"section-label\" id=\"clients\">Clients <span class=\"count\">- 4 entries</span>\n\n  <div class=\"log\">"
+ },
+ {
+  "cat": "clients",
+  "cat_label": "Clients  - 4 entries",
+  "title": "spark-ai-workflow-orchestration",
+  "status": "Shipped",
+  "body": "The <strong>delivered Spark AI engagement</strong> for a Productboard enterprise customer - discovery through production go-live and handoff, turning a firehose of feedback into a weekly exec digest.",
+  "tags": [
+   "Python",
+   "LangChain",
+   "Spark AI",
+   "REST / JSON"
+  ],
+  "pain": "This customer's product team received thousands of feedback items a month across channels. Nobody could read it all, so themes were missed and leadership flew blind on what customers actually wanted.",
+  "solve": "A production workflow that classifies and summarizes the full volume into a weekly digest by product area - and the customer's team was trained to own and extend it after handoff.",
+  "where": "Productboard client &middot; production delivery",
+  "steps": [
+   "Ran a discovery workshop with the customer to map their channels, feedback volume, and the product taxonomy the output had to match.",
+   "Configured the <code>Spark AI</code> workflow and wrote <code>Python</code> glue to pull and normalize feedback from their sources before processing.",
+   "Used <code>LangChain</code> for the multi-step conditional logic Spark didn't cover natively, then validated output quality against a labeled sample with the customer.",
+   "Took it to production, documented the config, and trained their team to run and extend it - a deliberate handoff, not a dependency."
+  ],
+  "why": "This was the actual customer engagement: scoping, delivery, and enablement end to end. The reusable architecture pattern behind it lives in the Solutions Architecture section.",
+  "proto": "<div class=\"proto-box\">\n          <div class=\"proto-label\">&#9656; the delivered output - a weekly digest</div>\n          <div class=\"spec-out\" id=\"digest-out\">Press generate to see the kind of digest the customer received.</div>\n          <button class=\"proto-btn primary\" onclick=\"runDigest()\" style=\"margin-top:12px;\">&#9654; Generate this week's digest</button></div>"
+ },
+ {
+  "cat": "clients",
+  "cat_label": "Clients  - 4 entries",
+  "title": "geolocation-radius-validation",
+  "status": "Shipped",
+  "body": "A news API sold \"get articles near this location.\" If the radius math is even slightly wrong, customers get irrelevant articles or silently miss relevant ones - and never file a bug, they just quietly stop trusting the feature.",
+  "tags": [
+   "Python",
+   "Postman",
+   "JSON Schema"
+  ],
+  "pain": "A radius filter that's subtly wrong doesn't throw an error - it just returns results that are almost right. Customers don't report \"almost right,\" they just quietly pull full datasets and filter client-side instead, which spikes load and erodes trust in the API.",
+  "solve": "Independently proves the radius math is correct before it ships, so 150+ enterprise clients could trust the filter enough to actually use it - directly cutting support tickets 24.7%.",
+  "where": "Perigon &middot; geolocation radius filter",
+  "steps": [
+   "In <strong>VS Code</strong>, wrote a <code>Python</code> test script implementing the <code>Haversine formula</code> independently of the production code, as a ground-truth check.",
+   "Called the live API with the new radius parameter, then asserted every returned article actually fell within the declared radius using the independent calculation.",
+   "Built a <code>Postman</code> collection covering edge cases (boundary of radius, zero radius, antimeridian) for repeatable regression testing.",
+   "Wrote the client-facing API docs and ran release communication to the full enterprise client base."
+  ],
+  "why": "Built at Perigon before shipping a geolocation filter to 150+ enterprise accounts. This is the validation discipline that makes a customer trust a feature enough to actually adopt it - not just ship it.",
+  "proto": "<div class=\"proto-box\">\n          <div class=\"proto-label\">\u25b8 try it - this is the real formula, live</div>\n          <div class=\"form-grid three\">\n            <div class=\"field\"><label>Center lat, lon</label><input id=\"hv-center\" value=\"40.7128, -74.0060\"></div>\n            <div class=\"field\"><label>Article lat, lon</label><input id=\"hv-point\" value=\"40.7484, -73.9857\"></div>\n            <div class=\"field\"><label>Radius (km)</label><input id=\"hv-radius\" value=\"10\"></div>\n          </div>\n          <button class=\"proto-btn primary\" onclick=\"runHaversine()\">Validate radius</button>\n          <div class=\"result-box\" id=\"hv-result\"></div>\n          <div class=\"proto-note\">Actual Haversine math, computed in your browser - not a mockup.</div></div>"
+ },
+ {
+  "cat": "clients",
+  "cat_label": "Clients  - 4 entries",
+  "title": "legacy-data-migration-automation",
+  "status": "Shipped",
+  "body": "Automated a manual, multi-week enterprise data migration into a <strong>same-day process</strong> with built-in validation and human-review flagging.",
+  "tags": [
+   "Python",
+   "pandas",
+   "Productboard REST API"
+  ],
+  "pain": "Every enterprise onboarding started with years of legacy feedback data in inconsistent formats - some CSV exports, some Salesforce dumps. Migrating it by hand took weeks and still shipped errors into the new system.",
+  "solve": "Collapses a multi-week manual migration into a same-day, repeatable process where bad records are caught and flagged, not discovered by the customer after go-live.",
+  "where": "Productboard &middot; enterprise onboarding",
+  "steps": [
+   "In <strong>VS Code</strong>, wrote a <code>Python</code> pipeline using <code>pandas</code> to ingest mixed CSV and Salesforce-export sources into one dataframe.",
+   "Normalized fields (names, dates, emails), then validated each row against the target <code>JSON schema</code> for the <code>Productboard REST API</code>.",
+   "Clean rows were batch-imported via the API; ambiguous rows were written to a review queue with the specific reason flagged.",
+   "Logged every insert and rejection so the customer had a full audit of what moved and what needed a human."
+  ],
+  "why": "Built at Productboard to onboard enterprise customers faster without shipping data errors into their new environment.",
+  "proto": "<div class=\"proto-box\">\n          <div class=\"proto-label\">\u25b8 try it - run the cleaner on messy rows</div>\n          <div class=\"field\"><label>Raw rows (name, email, signup_date)</label>\n          <textarea id=\"mig-input\" rows=\"5\">Jon Smith , jon@acme.com , 03/14/2026\n maria garcia,maria.garcia@,2026-03-15\nDAVE LEE , dave@beta.io , 3-16-26\nlucy chen,lucy@chen.io,03/17/2026</textarea></div>\n          <button class=\"proto-btn primary\" onclick=\"runMigration()\" style=\"margin-top:8px;\">\u25b6 Run migration</button>\n          <div id=\"mig-output\"></div></div>"
+ },
+ {
+  "cat": "clients",
+  "cat_label": "Clients  - 4 entries",
+  "title": "salesforce-productboard-two-way-sync",
+  "status": "Shipped",
+  "body": "A <strong>bi-directional integration</strong> connecting a client's Salesforce instance to Productboard - customer requests flowed in, roadmap decisions flowed back out, automatically.",
+  "tags": [
+   "Python",
+   "Salesforce API",
+   "Productboard REST API",
+   "Webhooks"
+  ],
+  "pain": "The client's sales team logged feature requests in Salesforce Opportunities, but product lived in Productboard. Someone re-typed every request by hand, and once product made a call, sales had no way of knowing without asking.",
+  "solve": "One integration keeps both systems in sync - requests land in Productboard automatically, and roadmap status flows back onto the Salesforce record, so both teams work off the same truth.",
+  "where": "Productboard client &middot; enterprise deployment",
+  "steps": [
+   "In <strong>VS Code</strong>, stood up a <code>Python</code> webhook listener to receive <code>Salesforce</code> Opportunity events in real time.",
+   "On a flagged Opportunity, mapped the record's fields to a structured feature note and created it in Productboard via the <code>Productboard REST API</code>.",
+   "Built the reverse path: a sync job read roadmap status and priority changes and wrote them back onto the originating Salesforce record through the <code>Salesforce API</code>.",
+   "Added retry with exponential backoff and an error queue so a failed call never silently dropped a record - both teams could trust the data."
+  ],
+  "why": "Built for a Productboard enterprise client whose sales and product teams were maintaining the same list twice. The kind of CRM-to-system-of-record bridge post-sales customers need across their whole stack.",
+  "proto": "<div class=\"proto-box\">\n          <div class=\"proto-label\">&#9656; try it - simulate a sync cycle</div>\n          <div class=\"sync-stage\">\n            <div class=\"sync-node\"><div class=\"n-label\">Salesforce</div><div class=\"n-sub\" id=\"sf-sub\">Opportunity: Acme Corp</div></div>\n            <div class=\"sync-dot\" id=\"sync-dot\"></div>\n            <div class=\"sync-node\"><div class=\"n-label\">Productboard</div><div class=\"n-sub\" id=\"pb-sub\">awaiting sync...</div></div>\n          </div>\n          <div class=\"sync-map\" id=\"sync-map\">\n            <div class=\"row\"><span>Opportunity: \"Bulk export API\"</span><span>-</span></div>\n            <div class=\"row\"><span>Stage: Discovery</span><span>-</span></div>\n          </div>\n          <button class=\"proto-btn primary\" onclick=\"runSync()\" style=\"margin-top:12px;\">&#8646; Run sync cycle</button>\n        </div>\n      </div></div>\n    \n\n  \n\n  <div class=\"section-label\" id=\"operations\">Operations <span class=\"count\">- 5 entries</span>\n\n  <div class=\"log\">"
+ },
+ {
+  "cat": "operations",
+  "cat_label": "Operations  - 5 entries",
+  "title": "colleague-ai-productivity-agent",
+  "status": "Shipped",
+  "body": "Built and rolled out an <strong>internal AI assistant for the team's own workflow</strong> - grounded answers on accounts and activity, not a generic chatbot.",
+  "tags": [
+   "Python",
+   "Claude / GPT-4 API",
+   "Prompt design",
+   "Internal tooling"
+  ],
+  "pain": "The team kept asking the same categories of questions - \"what happened on this account last week,\" \"draft a follow-up to this client,\" \"what's the status of this feature\" - each person solving it their own way in their own ChatGPT tab.",
+  "solve": "A lightweight shared agent with a small set of grounded actions, wired to the same data sources already in use, with versioned prompt templates so answer quality stayed consistent across the team.",
+  "where": "Productboard &middot; internal team tooling",
+  "steps": [
+   "Catalogued the 5-6 question types the team asked repeatedly, then wrote a versioned <code>Python</code> prompt template for each.",
+   "Wired each template to the actual data source it needed - <code>Productboard API</code> for feature status, CRM export for account activity.",
+   "Called the <code>Claude / GPT-4 API</code> with the matched template so answers stayed grounded instead of generic.",
+   "Shared it as one internal tool with version-controlled prompts, instead of everyone maintaining their own ChatGPT thread."
+  ],
+  "why": "Built at Productboard so the team stopped re-solving the same prompt-engineering problem individually. Same pattern behind any \"internal Slack bot that actually knows your data\" a Rippling customer would want.",
+  "proto": "<div class=\"proto-box\">\n          <div class=\"proto-label\">\u25b8 try it - ask the agent</div>\n          <div class=\"chip-row\">\n            <div class=\"chip\" onclick=\"askAgent('Summarize my week')\">Summarize my week</div>\n            <div class=\"chip\" onclick=\"askAgent('Draft a follow-up email')\">Draft a follow-up email</div>\n            <div class=\"chip\" onclick=\"askAgent('What changed on Project Nova?')\">What changed on Project Nova?</div>\n          </div>\n          <div class=\"agent-input-row\">\n            <input id=\"agent-in\" placeholder=\"Or type your own question...\" onkeydown=\"if(event.key==='Enter'){event.stopPropagation();askAgent(document.getElementById('agent-in').value);}\" onclick=\"event.stopPropagation()\">\n            <button class=\"proto-btn\" onclick=\"askAgent(document.getElementById('agent-in').value)\">Ask (instant)</button>\n          </div>\n          <div class=\"agent-out\" id=\"agent-out\"><div class=\"who\">agent</div><div id=\"agent-text\">Ready when you are.</div></div>\n          <button class=\"proto-btn primary\" id=\"agent-live-btn\" onclick=\"askAgentLive()\" style=\"margin-top:10px;\">&#10022; Ask live with Claude</button>\n          <div class=\"spec-out\" id=\"agent-live-out\" style=\"display:none;\"></div>\n          <div class=\"proto-note\" id=\"agent-live-note\">Chips and typed questions above are instant/scripted. This button sends your typed question to a real Claude call - one live call per session.</div></div>"
+ },
+ {
+  "cat": "operations",
+  "cat_label": "Operations  - 5 entries",
+  "title": "internal-ops-document-automation",
+  "status": "Shipped",
+  "body": "Built a <strong>document-generation pipeline</strong> for my own hospitality venues - the kind of internal process tooling a Chief of Staff builds, not requests.",
+  "tags": [
+   "Python",
+   "ReportLab"
+  ],
+  "pain": "As co-owner and operator of two Austin venues, operational documents (handbooks, comp structures, compliance policies) needed rebranding and regenerating as the business evolved - redoing them by hand every time was slow and error-prone.",
+  "solve": "A pipeline regenerates fully formatted, branded PDFs from structured content on demand, with logo, color system, typography, and legal sections all driven from one source of truth.",
+  "where": "The Lobby &amp; sister venue &middot; personal operations",
+  "steps": [
+   "In <strong>VS Code</strong>, wrote a <code>Python</code> script using <code>ReportLab</code> to generate PDFs programmatically instead of editing Word docs by hand.",
+   "Separated content (policy text, comp tables) from styling (logo, color, typography) into a single structured source file.",
+   "Built the layout template once - headers, section breaks, legal footer - so any content change regenerates a fully branded document instantly.",
+   "Reused the same pipeline across both venues by swapping the branding inputs, not rebuilding the template."
+  ],
+  "why": "Built to solve my own operational pain running two venues - the same instinct that made me build backend tooling instead of doing repetitive work by hand at every company I've worked at.",
+  "proto": "<div class=\"proto-box\">\n          <div class=\"proto-label\">\u25b8 try it - regenerate a letterhead live</div>\n          <div class=\"form-grid\">\n            <div class=\"field\"><label>Venue name</label><input id=\"dg-name\" value=\"The Lobby Social Bar\" oninput=\"renderDoc()\" onclick=\"event.stopPropagation()\"></div>\n            <div class=\"field\"><label>Tagline</label><input id=\"dg-tag\" value=\"Employee Handbook &middot; 2026\" oninput=\"renderDoc()\" onclick=\"event.stopPropagation()\"></div>\n            <div class=\"field\"><label>Accent color</label><input id=\"dg-color\" type=\"color\" value=\"#c41e3a\" oninput=\"renderDoc()\" onclick=\"event.stopPropagation()\"></div>\n          </div>\n          <div class=\"docgen-preview\" id=\"dg-preview\">\n            <div class=\"dg-name\" id=\"dg-name-out\">The Lobby Social Bar</div>\n            <div class=\"dg-tag\" id=\"dg-tag-out\">Employee Handbook &middot; 2026</div>\n            <div class=\"dg-bar\" id=\"dg-bar-out\"></div></div></div>"
+ },
+ {
+  "cat": "operations",
+  "cat_label": "Operations  - 5 entries",
+  "title": "board-update-auto-draft",
+  "status": "Concept",
+  "body": "Pull metrics from wherever they already live into a <strong>first-draft board or investor update</strong>, so a leader edits a draft instead of assembling one from scratch every cycle.",
+  "tags": [
+   "API aggregation",
+   "Scheduled job",
+   "Claude API"
+  ],
+  "pain": "Most board decks lose a day of an exec's time every cycle just gathering numbers that already exist somewhere else in the business.",
+  "solve": "A scheduled job pulls the metrics leadership already tracks weekly and drafts the narrative summary automatically - flagging anything that moved notably so the exec knows what needs a story, and edits from there.",
+  "where": "Design concept &middot; applies the Spark AI pattern to exec reporting",
+  "steps": [
+   "Designed a scheduled job to pull the same 5-8 metrics leadership already tracks weekly from wherever they live.",
+   "Drop them into a structured template, then call the <code>Claude API</code> to draft the narrative summary paragraph.",
+   "Flag anything that moved more than one standard deviation from trend so the exec knows what actually needs a story.",
+   "The exec edits and adds color - the system drafts, it never sends anything on its own."
+  ],
+  "why": "A direct application of the same ingest-classify-summarize orchestration pattern built at Productboard, aimed at a different audience - executive reporting instead of customer feedback.",
+  "proto": "<div class=\"proto-box\">\n          <div class=\"proto-label\">\u25b8 try it - populate a board slide</div>\n          <div class=\"form-grid three\">\n            <div class=\"field\"><label>ARR ($k)</label><input id=\"bd-arr\" value=\"842\" oninput=\"renderBoard()\" onclick=\"event.stopPropagation()\"></div>\n            <div class=\"field\"><label>Net churn (%)</label><input id=\"bd-churn\" value=\"1.8\" oninput=\"renderBoard()\" onclick=\"event.stopPropagation()\"></div>\n            <div class=\"field\"><label>Headcount</label><input id=\"bd-hc\" value=\"34\" oninput=\"renderBoard()\" onclick=\"event.stopPropagation()\"></div>\n          </div>\n          <div class=\"board-slide\">\n            <div class=\"bs-title\">Monthly business update - auto-draft</div>\n            <div class=\"board-metrics\">\n              <div class=\"board-metric\"><div class=\"bm-num\" id=\"bd-arr-out\">$842k</div><div class=\"bm-label\">ARR</div></div>\n              <div class=\"board-metric\"><div class=\"bm-num\" id=\"bd-churn-out\">1.8%</div><div class=\"bm-label\">Net churn</div></div>\n              <div class=\"board-metric\"><div class=\"bm-num\" id=\"bd-hc-out\">34</div><div class=\"bm-label\">Headcount</div></div>\n            </div>\n            <div class=\"proto-status\" id=\"bd-narrative\" style=\"margin-top:14px;\">Narrative draft updates as you edit the numbers &#8594;</div>\n          </div>\n          <button class=\"proto-btn primary\" id=\"board-live-btn\" onclick=\"runBoardLive()\" style=\"margin-top:12px;\">&#10022; Write this narrative with Claude</button>\n          <div class=\"spec-out\" id=\"board-live-out\" style=\"display:none;\"></div>\n          <div class=\"proto-note\" id=\"board-live-note\">The line above is instant/scripted. This button asks Claude to write the actual board narrative from these numbers - one live call per session.</div></div>"
+ },
+ {
+  "cat": "operations",
+  "cat_label": "Operations  - 5 entries",
+  "title": "meeting-followthrough-agent",
+  "status": "Concept",
+  "body": "Turn raw meeting notes into <strong>owned, tracked action items</strong> automatically - the unglamorous work that determines whether meetings actually move anything.",
+  "tags": [
+   "NLP extraction",
+   "Claude API",
+   "Slack/email nudges"
+  ],
+  "pain": "The gap in most meetings isn't decisions, it's follow-through - commitments made out loud that nobody re-surfaces until someone asks \"did that happen?\" three weeks later.",
+  "solve": "Paste meeting notes, get back owned action items automatically, with a nudge at the due date - nothing said out loud gets lost.",
+  "where": "Design concept &middot; internal process tooling",
+  "steps": [
+   "Take raw meeting notes as input - paste, or auto-pulled from a notes tool.",
+   "Run them through an LLM prompt tuned specifically to identify action-bearing sentences vs. general discussion.",
+   "Assign an owner where one's named in the text; flag sentences with no clear owner for manual assignment.",
+   "Push confirmed items to Slack/email with a nudge scheduled at the stated due date."
+  ],
+  "why": "The instant version below uses simple keyword matching to demonstrate the extraction logic. The live button calls a real Claude prompt tuned for this exact task.",
+  "proto": "<div class=\"proto-box\">\n          <div class=\"proto-label\">\u25b8 try it - paste rough notes, extract action items</div>\n          <div class=\"field\"><label>Meeting notes</label>\n          <textarea id=\"mtg-input\" rows=\"4\">Sarah will send the updated pricing deck by Friday. We need to follow up with the Acme legal team on the MSA redline. Devon should loop in finance before the offsite budget is finalized. Good discussion on Q3 roadmap, no changes needed there.</textarea></div>\n          <div style=\"display:flex; gap:8px; margin-top:8px; flex-wrap:wrap;\">\n            <button class=\"proto-btn\" onclick=\"extractActions()\">\u25b6 Extract (instant)</button>\n            <button class=\"proto-btn primary\" id=\"mtg-live-btn\" onclick=\"runMeetingLive()\">&#10022; Extract live with Claude</button>\n          </div>\n          <div id=\"mtg-output\" style=\"margin-top:12px;\"></div>\n          <div class=\"spec-out\" id=\"mtg-live-out\" style=\"display:none;\"></div>\n          <div class=\"proto-note\" id=\"mtg-live-note\">Instant uses keyword matching. Live sends the notes above to a real Claude call - one live call per session.</div></div>"
+ },
+ {
+  "cat": "operations",
+  "cat_label": "Operations  - 5 entries",
+  "title": "vendor-renewal-radar",
+  "status": "Concept",
+  "body": "A single view of every contract, subscription, and vendor renewal with automatic lead-time alerts - <strong>so nothing auto-renews or lapses by accident.</strong>",
+  "tags": [
+   "Python",
+   "Date-driven alerts",
+   "Spend tracking"
+  ],
+  "pain": "A vendor auto-renews at a bad rate because nobody owned the 30-day notice window - a category of thing that quietly costs real money and is entirely preventable.",
+  "solve": "One source of truth for every contract's renewal date and notice period, with automatic escalating alerts as the window closes, color-coded by urgency.",
+  "where": "Design concept &middot; inspired by real venue vendor management",
+  "steps": [
+   "Maintain one structured record per contract - vendor, renewal date, notice-period length, monthly cost.",
+   "A scheduled <code>Python</code> job checks days-remaining against the notice period daily.",
+   "Escalating alerts fire at 45/14/3 days out, color-coded by urgency, so nothing is a surprise.",
+   "A single dashboard view replaces checking each vendor's portal manually."
+  ],
+  "why": "Directly inspired by running vendor and lease contracts for two venues by hand - the exact kind of preventable miss a Chief of Staff or Solutions Architect is trusted to catch before it costs money.",
+  "proto": "<div class=\"proto-box\">\n          <div class=\"proto-label\">\u25b8 try it - live status against today's date</div>\n          <table class=\"ren-table\" id=\"ren-table\"></table>\n          <div class=\"proto-note\">Status computed live from today's date (Jul 2, 2026) against each renewal deadline.</div>\n        </div>\n      </div></div>\n    \n\n  \n\n  <div class=\"section-label\" id=\"personal\">Personal Projects <span class=\"count\">- 2 entries</span>\n\n  <div class=\"log\">"
+ },
+ {
+  "cat": "personal",
+  "cat_label": "Personal Projects  - 2 entries",
+  "title": "job-discovery-app",
+  "status": "In Build",
+  "body": "A Tinder-style job discovery product from architecture through backend logic - <strong>full schema, 7 automated trigger functions, AI-powered resume parsing and job scoring.</strong>",
+  "tags": [
+   "React",
+   "Supabase",
+   "Claude API",
+   "LangChain / LangGraph",
+   "Stripe"
+  ],
+  "pain": "Job search means manually reading hundreds of postings and re-typing the same info into every application - slow, repetitive, and nothing learns from what you actually liked.",
+  "solve": "A swipe interface backed by real scoring logic - upload a resume once, get matched and ranked postings daily, and the app learns from what you swipe.",
+  "where": "Personal project &middot; in active development",
+  "steps": [
+   "In <strong>VS Code</strong>, designed the <code>Supabase</code> schema - users, profiles, filters, jobs, a scoring junction table, and an application log.",
+   "Built resume upload that triggers <code>Claude API</code> parsing into structured JSON (skills, experience, target roles).",
+   "Wrote a batched scoring pipeline in <code>LangChain / LangGraph</code> that matches candidates against live postings in groups of 10.",
+   "Built the <code>React</code> swipe UI where actions write to state, and a daily cron refills each user's queue automatically."
+  ],
+  "why": "Built to solve my own job search problem while job hunting - full-stack, end to end, not a tutorial project.",
+  "proto": "<div class=\"proto-box\">\n          <div class=\"proto-label\">\u25b8 try it - swipe the queue</div>\n          <div class=\"swipe-stage\"><div class=\"swipe-card\" id=\"swipe-card\">\n            <div class=\"swipe-company\" id=\"swipe-company\"></div>\n            <div class=\"swipe-role\" id=\"swipe-role\"></div>\n            <div class=\"swipe-meta\" id=\"swipe-meta\"></div>\n          </div></div>\n          <div class=\"swipe-controls\">\n            <button class=\"proto-btn pass\" onclick=\"swipeCard('pass')\">\u2715 Pass</button>\n            <button class=\"proto-btn like\" onclick=\"swipeCard('like')\">\u2665 Like</button>\n          </div>\n          <div class=\"proto-status\" id=\"swipe-status\"></div></div>"
+ },
+ {
+  "cat": "personal",
+  "cat_label": "Personal Projects  - 2 entries",
+  "title": "visa-appointment-checker-bot",
+  "status": "Shipped",
+  "body": "A Telegram bot that <strong>monitors Schengen visa appointment slots</strong> across consulates and pushes real-time availability alerts.",
+  "tags": [
+   "Python",
+   "Telegram Bot API",
+   "Cron"
+  ],
+  "pain": "Visa appointment slots open and disappear within minutes across multiple consulate sites - checking manually multiple times a day is impractical and slots are consistently missed.",
+  "solve": "The bot polls every consulate on a schedule and pushes an alert the instant a slot opens, so you never have to babysit a webpage.",
+  "where": "Personal project &middot; solved my own visa logistics",
+  "steps": [
+   "In <strong>VS Code</strong>, wrote a <code>Python</code> script that polls each consulate's appointment API/page on a <code>cron</code> schedule.",
+   "Parsed each response for open slots and diffed against the last known state to detect new availability.",
+   "On a new slot, called the <code>Telegram Bot API</code> to push an instant alert to my phone.",
+   "Stored credentials in environment variables, never hardcoded, and ran it unattended on a schedule."
+  ],
+  "why": "Built to solve a real, personal logistics problem during my own visa process - small in scope, but it runs unattended and does its job every day.",
+  "proto": "<div class=\"proto-box\">\n          <div class=\"proto-label\">\u25b8 try it - replay a check cycle</div>\n          <div class=\"term-box\" id=\"term-box\">$ waiting to run...</div>\n          <button class=\"proto-btn primary\" onclick=\"runTerminal()\" style=\"margin-top:12px;\">\u25b6 Run check</button>\n          <div class=\"proto-note\">Simulated replay of real bot output - the live bot runs unattended on a schedule.</div></div>"
+ }
+]

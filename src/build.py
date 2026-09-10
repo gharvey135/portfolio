@@ -91,19 +91,20 @@ by_cat = {}
 for e in entries: by_cat.setdefault(e['cat'], []).append(e)
 
 SECTIONS = [
- ("production", "Personal projects", "Systems I built and run",
-  "Built for the two Austin venues I co-own, and running there now. The code and the live demos are public.",
-  [from_venue(v) for v in VENUES]),
  ("clients", "Client delivery", "Shipped to enterprise customers",
   "Scoped, built, taken to production, and handed to their team to run. "
   "Mock data or changed names are used throughout for privacy where necessary.",
   [from_entry(e) for e in by_cat.get('clients', [])]),
+ ("production", "Personal projects", "Systems I built and run",
+  "Built for the two Austin venues I co-own, and running there now. The code and the live demos are public.",
+  [from_venue(v) for v in VENUES]),
  ("solutions", "Internal tools", "Tools I built to do the job better",
   "Built between engagements, for scoping, account reviews, and integration debugging. "
   "Each one turns a task that used to need a senior engineer into something a team can run.",
   [from_entry(e) for e in by_cat.get('solutions', [])]),
- ("operations", "Operations", "The unglamorous systems",
-  "Rarely the thing anyone demos, usually the thing that decides whether output stays consistent.",
+ ("operations", "Back office automation", "The work nobody wants to do twice",
+  "Recurring internal work turned into something that runs on a schedule: documents rebuilt, "
+  "updates drafted, action items chased, renewals flagged before they lapse.",
   [from_entry(e) for e in by_cat.get('operations', [])]),
  ("personal", "Side builds", "Problems I had, solved end to end",
   "Built for myself rather than tolerated.",
@@ -137,8 +138,8 @@ secs += f'''
   <div class="repos">{repos}</div>
 </div></section>'''
 
-NAV = [("production","personal projects"),("clients","client delivery"),("solutions","internal tools"),
-       ("operations","operations"),("personal","side builds"),("code","open source")]
+NAV = [("clients","client delivery"),("production","personal projects"),("solutions","internal tools"),
+       ("operations","back office"),("personal","side builds"),("code","open source")]
 nav = ''.join(f'<a href="#{i}">{l}</a>' for i, l in NAV)
 
 HERO_MAP = flow({
@@ -161,17 +162,18 @@ stages = ''.join(
   f'<li><span class="st-n">{i+1}</span><span class="st-t">{t}</span></li>'
   for i, t in enumerate(STAGES))
 
-DESC = ("Georgia Harvey, Solutions Architect in Austin, TX. Enterprise integrations and AI workflows, "
-        "discovery through handoff. Production systems, client delivery, and open source, with the code.")
+DESC = ("Georgia Harvey. Eight years of enterprise integrations and AI workflows: solutions architecture, "
+        "sales engineering, and forward deployed delivery, discovery through handoff. Client delivery, "
+        "systems I run, and open source, with the code.")
 
 page = f'''<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Georgia Harvey, Solutions Architect</title>
+<title>Georgia Harvey, Solutions and Forward Deployed Engineering</title>
 <meta name="description" content="{DESC}">
-<meta property="og:title" content="Georgia Harvey, Solutions Architect">
+<meta property="og:title" content="Georgia Harvey, Solutions and Forward Deployed Engineering">
 <meta property="og:description" content="{DESC}">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#08090C">
@@ -191,10 +193,10 @@ page = f'''<!doctype html>
 
 <header class="hero"><div class="wrap">
   <div class="hero-txt" data-rv>
-  <div class="eyebrow">Solutions Architect &middot; Austin, TX</div>
+  <div class="eyebrow">Hi y&#8217;all, I&#8217;m Georgia</div>
   <h1 class="name">Georgia Harvey</h1>
   <p class="lede">I connect the systems a business already runs, and then <em>hand them over working</em>.</p>
-  <p class="sub">Seven years of enterprise integrations and AI workflows. Every build below opens to show the architecture, the decisions, and in most cases a prototype you can run right here.</p>
+  <p class="sub">Eight years of enterprise integrations and AI workflows: solutions architecture, sales engineering, and getting embedded with a customer&#8217;s team until the thing actually ships. Every build below opens up to show the architecture, the decisions, and usually a prototype you can run right here.</p>
   <div class="links">
     <a class="lk primary" href="mailto:gharvey135@gmail.com">{MAIL}gharvey135@gmail.com</a>
     <a class="lk" href="https://github.com/gharvey135" target="_blank" rel="noopener">{ICON["code"]}GitHub</a>

@@ -193,10 +193,10 @@ page = f'''<!doctype html>
 
 <header class="hero"><div class="wrap">
   <div class="hero-txt" data-rv>
-  <div class="eyebrow">Hi y&#8217;all, I&#8217;m Georgia</div>
+  <div class="eyebrow">Hi y&#8217;all</div>
   <h1 class="name">Georgia Harvey</h1>
-  <p class="lede">I connect the systems a business already runs, and then <em>hand them over working</em>.</p>
-  <p class="sub">Eight years of enterprise integrations and AI workflows: solutions architecture, sales engineering, and getting embedded with a customer&#8217;s team until the thing actually ships. Every build below opens up to show the architecture, the decisions, and usually a prototype you can run right here.</p>
+  <p class="lede">I sit between the people with the problem and the systems that could solve it, and I <em>build the part in the middle</em>.</p>
+  <p class="sub">Eight years of connecting systems that were never meant to talk to each other, building whatever has to exist in between, and staying close enough to the customer that what ships is the thing they actually needed. Every build below opens up to show the architecture, the decisions, and usually a prototype you can run right here.</p>
   <div class="links">
     <a class="lk primary" href="mailto:gharvey135@gmail.com">{MAIL}gharvey135@gmail.com</a>
     <a class="lk" href="https://github.com/gharvey135" target="_blank" rel="noopener">{ICON["code"]}GitHub</a>

@@ -224,5 +224,15 @@ page = f'''<!doctype html>
 </body>
 </html>'''
 
+# minify: CSS block, plus indentation-only whitespace between tags
+def _mincss(m):
+    c = re.sub(r'/\*.*?\*/', '', m.group(1), flags=re.S)
+    c = re.sub(r'\s*([{}:;,>])\s*', r'\1', c)
+    c = re.sub(r';}', '}', c)
+    return '<style>' + re.sub(r'\s+', ' ', c).strip() + '</style>'
+page = re.sub(r'<style>(.*?)</style>', _mincss, page, flags=re.S)
+page = re.sub(r'>\n\s+<', '><', page)
+page = re.sub(r'\n{2,}', '\n', page)
+
 open('../index.html','w').write(page)
 print('index.html', len(page), 'chars')

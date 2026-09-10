@@ -4,15 +4,15 @@ Source for [georgia-sa-portfolio.vercel.app](https://georgia-sa-portfolio.vercel
 21 things I built, each with the problem, the decisions, and in most cases a prototype you can run in the page.
 
 **Run it:** serve the folder (`python3 -m http.server`) and open it. No build step, no dependencies, no bundler.
-**What it proves:** the page reads two ways. A "Plain English / Technical" switch rewrites every
-description in place, because the job is translating between those two audiences.
+**What it proves:** every build carries its own architecture diagram, generated from a data spec rather
+than drawn by hand, so the page reads as a system rather than a list of paragraphs.
 
 ## Layout
 
 | Path | What it is |
 | --- | --- |
 | `index.html` | The page. Markup only. |
-| `assets/` | `style.css` (design tokens and layout), `app.js` (18 interactive prototypes), `toggle.js` (the Plain English / Technical switch). |
+| `assets/` | `style.css` (design tokens and layout), `app.js` (18 interactive prototypes), `shots/` (screenshots of the live demos). |
 | `api/translate.js` | Vercel serverless function. Six task-specific prompts behind one endpoint, so the "Run live with Claude" buttons call a real model. The key is an environment variable and never reaches the client. |
 | `src/` | The generator. `build.py` assembles `index.html` from the extracted content model plus the design system, so copy and layout stay separable. |
 
@@ -29,8 +29,9 @@ version, so a cold API never shows a visitor an error.
 cd src && python3 build.py     # writes ../index.html
 ```
 
-Content lives in `src/content.json` (technical copy, extracted from the previous version) and
-`src/plain.json` (the plain-English layer). Design tokens are in `src/style.css`.
+Content lives in `src/content.json` (copy, extracted from the previous version) and `src/plain.json`
+(the human-readable titles). `src/diagrams_data.py` holds one column-flow spec per build and
+`src/diagram.py` renders each to inline SVG. Design tokens are in `src/style.css`.
 
 ## Deploying
 

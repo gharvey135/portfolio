@@ -193,7 +193,7 @@
   "cat_label": "Clients  - 4 entries",
   "title": "geolocation-radius-validation",
   "status": "Shipped",
-  "body": "A news API sold \"get articles near this location.\" If the radius math is even slightly wrong, customers get irrelevant articles or silently miss relevant ones - and never file a bug, they just quietly stop trusting the feature.",
+  "body": "A news API sold \"articles near this location\". If the radius math is subtly wrong, customers get irrelevant results, never file a bug, and quietly stop trusting the feature.",
   "tags": [
    "Python",
    "Postman",
